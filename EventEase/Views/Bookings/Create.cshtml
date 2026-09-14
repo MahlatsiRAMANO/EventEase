@@ -1,0 +1,153 @@
+﻿@model EventEase.Models.Booking
+
+@{
+    ViewData["Title"] = "Book Venue";
+    var venue = ViewBag.Venue as EventEase.Models.Venue;
+}
+
+<div class="container mt-5">
+
+    <h1>Book Venue</h1>
+
+    <div class="card mt-4">
+        <div class="card-body">
+
+            <h3>@venue?.Name</h3>
+
+            <p class="text-muted">
+                 @venue?.Location
+            </p>
+
+            <p>
+                Maximum capacity: <strong>@venue?.Capacity guests</strong>
+            </p>
+
+            <hr />
+
+            <form asp-action="Create" method="post">
+
+                <input type="hidden" asp-for="VenueId" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3">
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CustomerName" class="form-label">
+                        Your Name
+                    </label>
+
+                    <input asp-for="CustomerName"
+                           class="form-control" />
+
+                    <span asp-validation-for="CustomerName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="CustomerEmail" class="form-label">
+                        Email Address
+                    </label>
+
+                    <input asp-for="CustomerEmail"
+                           class="form-control"
+                           type="email" />
+
+                    <span asp-validation-for="CustomerEmail"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EventName" class="form-label">
+                        Event Name
+                    </label>
+
+                    <input asp-for="EventName"
+                           class="form-control"
+                           placeholder="e.g. Sarah's 30th Birthday" />
+
+                    <span asp-validation-for="EventName"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="EventDate" class="form-label">
+                        Event Date
+                    </label>
+
+                    <input asp-for="EventDate"
+                           class="form-control"
+                           type="date" />
+
+                    <span asp-validation-for="EventDate"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="StartTime" class="form-label">
+                            Start Time
+                        </label>
+
+                        <input asp-for="StartTime"
+                               class="form-control"
+                               type="time" />
+
+                        <span asp-validation-for="StartTime"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="EndTime" class="form-label">
+                            End Time
+                        </label>
+
+                        <input asp-for="EndTime"
+                               class="form-control"
+                               type="time" />
+
+                        <span asp-validation-for="EndTime"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="NumberOfGuests" class="form-label">
+                        Number of Guests
+                    </label>
+
+                    <input asp-for="NumberOfGuests"
+                           class="form-control"
+                           type="number"
+                           min="1"
+                           max="@venue?.Capacity" />
+
+                    <span asp-validation-for="NumberOfGuests"
+                          class="text-danger"></span>
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Confirm Booking
+                </button>
+
+                <a asp-controller="Venues"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

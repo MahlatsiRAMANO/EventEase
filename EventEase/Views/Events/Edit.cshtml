@@ -1,0 +1,237 @@
+﻿
+@model EventEase.Models.Booking
+
+@{
+    ViewData["Title"] = "Edit Event";
+    var venues = ViewBag.Venues as List<EventEase.Models.Venue>;
+}
+
+<p class="text-muted">
+    Update the event details below.
+</p>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <form asp-controller="Events"
+              asp-action="Edit"
+              asp-route-id="@Model.Id"
+              method="post"
+              enctype="multipart/form-data">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="All"
+                 class="text-danger mb-3">
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventName"
+                       class="form-label">
+                    Event Name
+                </label>
+
+                <input asp-for="EventName"
+                       class="form-control" />
+
+                <span asp-validation-for="EventName"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CustomerName"
+                       class="form-label">
+                    Customer Name
+                </label>
+
+                <input asp-for="CustomerName"
+                       class="form-control" />
+
+                <span asp-validation-for="CustomerName"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CustomerEmail"
+                       class="form-label">
+                    Customer Email
+                </label>
+
+                <input asp-for="CustomerEmail"
+                       type="email"
+                       class="form-control" />
+
+                <span asp-validation-for="CustomerEmail"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="VenueId"
+                       class="form-label">
+                    Venue
+                </label>
+
+                <select asp-for="VenueId"
+                        class="form-select">
+
+                    <option value="">
+                        -- Select a Venue --
+                    </option>
+
+                    @if (venues != null)
+                    {
+                        foreach (var venue in venues)
+                        {
+                            <option value="@venue.Id">
+                                @venue.Name - @venue.Location
+                            </option>
+                        }
+                    }
+
+                </select>
+
+                <span asp-validation-for="VenueId"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="EventDate"
+                       class="form-label">
+                    Event Date
+                </label>
+
+                <input asp-for="EventDate"
+                       type="date"
+                       class="form-control" />
+
+                <span asp-validation-for="EventDate"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="StartTime"
+                           class="form-label">
+                        Start Time
+                    </label>
+
+                    <input asp-for="StartTime"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="StartTime"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+                <div class="col-md-6 mb-3">
+
+                    <label asp-for="EndTime"
+                           class="form-label">
+                        End Time
+                    </label>
+
+                    <input asp-for="EndTime"
+                           type="time"
+                           class="form-control" />
+
+                    <span asp-validation-for="EndTime"
+                          class="text-danger">
+                    </span>
+
+                </div>
+
+            </div>
+
+            <div class="mb-4">
+
+                <label asp-for="NumberOfGuests"
+                       class="form-label">
+                    Number of Guests
+                </label>
+
+                <input asp-for="NumberOfGuests"
+                       type="number"
+                       min="1"
+                       class="form-control" />
+
+                <span asp-validation-for="NumberOfGuests"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- Current Event Image -->
+            @if (!string.IsNullOrEmpty(Model.ImageUrl))
+            {
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Current Event Image
+                    </label>
+
+                    <div>
+                        <img src="@Model.ImageUrl"
+                             alt="@Model.EventName"
+                             class="img-fluid rounded shadow-sm"
+                             style="max-height: 250px; object-fit: cover;" />
+                    </div>
+
+                </div>
+            }
+
+            <!-- Upload New Image -->
+            <div class="mb-4">
+
+                <label for="imageFile"
+                       class="form-label">
+                    Change Event Image
+                </label>
+
+                <input type="file"
+                       id="imageFile"
+                       name="imageFile"
+                       class="form-control"
+                       accept="image/*" />
+
+                <small class="text-muted">
+                    Select a new image only if you want to replace the current image.
+                </small>
+
+            </div>
+
+            <div class="d-flex gap-2">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Save Changes
+                </button>
+
+                <a asp-controller="Events"
+                   asp-action="Index"
+                   class="btn btn-secondary">
+                    Cancel
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

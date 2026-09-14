@@ -1,0 +1,214 @@
+﻿@model EventEase.Models.Booking
+
+@{
+    ViewData["Title"] = "Create Event";
+    var venues = ViewBag.Venues as List<EventEase.Models.Venue>;
+}
+
+<div class="text-center mb-4">
+    <h1>Create Event</h1>
+    <p class="text-muted">
+        Create a new event and select an available venue.
+    </p>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+
+                <form asp-controller="Events"
+                      asp-action="Create"
+                      method="post"
+                      enctype="multipart/form-data">
+
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="text-danger mb-3">
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="EventName" class="form-label">
+                            Event Name
+                        </label>
+
+                        <input asp-for="EventName"
+                               class="form-control"
+                               placeholder="e.g. Sarah's 30th Birthday" />
+
+                        <span asp-validation-for="EventName"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CustomerName" class="form-label">
+                            Customer Name
+                        </label>
+
+                        <input asp-for="CustomerName"
+                               class="form-control"
+                               placeholder="Enter customer name" />
+
+                        <span asp-validation-for="CustomerName"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CustomerEmail" class="form-label">
+                            Customer Email
+                        </label>
+
+                        <input asp-for="CustomerEmail"
+                               type="email"
+                               class="form-control"
+                               placeholder="Enter customer email" />
+
+                        <span asp-validation-for="CustomerEmail"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VenueId" class="form-label">
+                            Venue
+                        </label>
+
+                        <select asp-for="VenueId"
+                                class="form-select">
+
+                            <option value="">
+                                -- Select a Venue --
+                            </option>
+
+                            @if (venues != null)
+                            {
+                                foreach (var venue in venues)
+                                {
+                                    <option value="@venue.Id">
+                                        @venue.Name - @venue.Location
+                                    </option>
+                                }
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="VenueId"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="EventDate" class="form-label">
+                            Event Date
+                        </label>
+
+                        <input asp-for="EventDate"
+                               type="date"
+                               class="form-control" />
+
+                        <span asp-validation-for="EventDate"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="StartTime"
+                                   class="form-label">
+                                Start Time
+                            </label>
+
+                            <input asp-for="StartTime"
+                                   type="time"
+                                   class="form-control" />
+
+                            <span asp-validation-for="StartTime"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="EndTime"
+                                   class="form-label">
+                                End Time
+                            </label>
+
+                            <input asp-for="EndTime"
+                                   type="time"
+                                   class="form-control" />
+
+                            <span asp-validation-for="EndTime"
+                                  class="text-danger">
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="NumberOfGuests"
+                               class="form-label">
+                            Number of Guests
+                        </label>
+
+                        <input asp-for="NumberOfGuests"
+                               type="number"
+                               min="1"
+                               class="form-control"
+                               placeholder="Enter number of guests" />
+
+                        <span asp-validation-for="NumberOfGuests"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+
+                    <div class="mb-4">
+                        <label for="imageFile" class="form-label">
+                            Event Image
+                        </label>
+
+                        <input type="file"
+                               id="imageFile"
+                               name="imageFile"
+                               class="form-control"
+                               accept="image/*" />
+
+                        <small class="text-muted">
+                            Upload an image for your event.
+                        </small>
+                    </div>
+
+
+                    <div class="d-flex gap-2">
+
+                        <button type="submit"
+                                class="btn btn-success">
+                            Create Event
+                        </button>
+
+                        <a asp-controller="Events"
+                           asp-action="Index"
+                           class="btn btn-secondary">
+                            Cancel
+                        </a>
+
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,715 @@
+﻿@{
+    ViewData["Title"] = "EventEase";
+}
+
+<div class="eventease-home">
+
+    <section class="hero">
+
+        <div class="hero-content">
+
+            <div class="hero-text">
+
+                <div class="brand-pill">
+                    <span>✦</span>
+                    YOUR EVENT. YOUR MOMENT.
+                </div>
+
+                <h1>
+                    Where every
+                    <span>celebration</span>
+                    begins.
+                </h1>
+
+                <p>
+                    Discover beautiful venues, create memorable events
+                    and manage every booking with ease.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a asp-controller="Venues"
+                       asp-action="Index"
+                       class="btn-main">
+                        Explore Venues
+                        <span>→</span>
+                    </a>
+
+                    <a asp-controller="Events"
+                       asp-action="Create"
+                       class="btn-outline">
+                        Create an Event
+                    </a>
+
+                </div>
+
+            </div>
+
+            <div class="hero-visual">
+
+                <div class="glow glow-one"></div>
+                <div class="glow glow-two"></div>
+
+                <div class="event-card">
+
+                    <div class="event-card-top">
+                        <span>EVENTEASE</span>
+                        <span>✦</span>
+                    </div>
+
+                    <div class="event-icon">
+                        ♡
+                    </div>
+
+                    <p class="small-title">
+                        MAKE IT MEMORABLE
+                    </p>
+
+                    <h2>
+                        Your next
+                        <br />
+                        <em>great event.</em>
+                    </h2>
+
+                    <div class="event-details">
+
+                        <div>
+                            <small>VENUE</small>
+                            <strong>Perfect Place</strong>
+                        </div>
+
+                        <div>
+                            <small>GUESTS</small>
+                            <strong>Ready to celebrate</strong>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="floating-card floating-one">
+                    <span>✓</span>
+                    Easy Booking
+                </div>
+
+                <div class="floating-card floating-two">
+                    <span>✦</span>
+                    Made for Moments
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <section class="intro">
+
+        <div>
+            <p class="section-label">
+                HOW IT WORKS
+            </p>
+
+            <h2>
+                From idea to
+                <span>event.</span>
+            </h2>
+        </div>
+
+        <p class="intro-text">
+            EventEase takes the stress out of organising your next
+            celebration. Find your venue, create your event and
+            keep everything organised in one place.
+        </p>
+
+    </section>
+
+
+    <section class="steps">
+
+        <div class="step-card">
+
+            <div class="step-top">
+                <span>01</span>
+                <span class="step-icon">⌕</span>
+            </div>
+
+            <h3>Discover</h3>
+
+            <p>
+                Explore available venues and find the perfect space
+                for your celebration.
+            </p>
+
+            <a asp-controller="Venues"
+               asp-action="Index">
+                Explore venues →
+            </a>
+
+        </div>
+
+
+        <div class="step-card featured">
+
+            <div class="step-top">
+                <span>02</span>
+                <span class="step-icon">✦</span>
+            </div>
+
+            <h3>Plan</h3>
+
+            <p>
+                Choose your date, time and guest count while checking
+                that your venue is available.
+            </p>
+
+            <a asp-controller="Events"
+               asp-action="Create">
+                Create your event →
+            </a>
+
+        </div>
+
+
+        <div class="step-card">
+
+            <div class="step-top">
+                <span>03</span>
+                <span class="step-icon">♡</span>
+            </div>
+
+            <h3>Celebrate</h3>
+
+            <p>
+                Manage your bookings and keep your event details
+                organised from beginning to end.
+            </p>
+
+            <a asp-controller="Events"
+               asp-action="Index">
+                View events →
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <section class="stats">
+
+        <div>
+            <strong>01</strong>
+            <span>Simple booking</span>
+        </div>
+
+        <div>
+            <strong>02</strong>
+            <span>Easy management</span>
+        </div>
+
+        <div>
+            <strong>03</strong>
+            <span>Beautiful venues</span>
+        </div>
+
+        <div>
+            <strong>∞</strong>
+            <span>Memorable moments</span>
+        </div>
+
+    </section>
+
+
+    <section class="final-cta">
+
+        <div>
+
+            <p class="section-label">
+                YOUR NEXT CHAPTER
+            </p>
+
+            <h2>
+                Let's make it
+                <span>special.</span>
+            </h2>
+
+            <p>
+                Your perfect venue is closer than you think.
+            </p>
+
+        </div>
+
+        <a asp-controller="Venues"
+           asp-action="Index"
+           class="cta-button">
+            Find Your Venue
+            <span>→</span>
+        </a>
+
+    </section>
+
+</div>
+
+
+<style>
+
+    .eventease-home {
+        color: #292333;
+        overflow: hidden;
+    }
+
+    .hero {
+        position: relative;
+        min-height: 650px;
+        margin: -20px -12px 0;
+        padding: 90px 7%;
+        background: radial-gradient(circle at 80% 20%, #eadcff 0%, transparent 32%), linear-gradient(135deg, #fbf8ff 0%, #f2eaff 55%, #fff8fb 100%);
+        border-radius: 0 0 50px 50px;
+    }
+
+    .hero-content {
+        max-width: 1250px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        gap: 70px;
+    }
+
+    .brand-pill {
+        display: inline-flex;
+        gap: 10px;
+        align-items: center;
+        padding: 9px 17px;
+        border-radius: 50px;
+        background: rgba(255,255,255,.75);
+        border: 1px solid #e5d9f3;
+        color: #79549a;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+    }
+
+        .brand-pill span {
+            color: #b777c9;
+            font-size: 16px;
+        }
+
+    .hero h1 {
+        font-size: clamp(55px, 6vw, 88px);
+        line-height: .98;
+        letter-spacing: -4px;
+        font-weight: 800;
+        margin: 25px 0;
+        max-width: 650px;
+    }
+
+        .hero h1 span {
+            display: block;
+            color: #8b5aaa;
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .hero-text > p {
+        max-width: 500px;
+        font-size: 18px;
+        line-height: 1.7;
+        color: #716879;
+    }
+
+    .hero-buttons {
+        display: flex;
+        gap: 14px;
+        margin-top: 35px;
+        flex-wrap: wrap;
+    }
+
+    .btn-main,
+    .btn-outline {
+        padding: 15px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: .2s;
+    }
+
+    .btn-main {
+        background: #6f438f;
+        color: white;
+        box-shadow: 0 10px 25px rgba(111,67,143,.25);
+    }
+
+        .btn-main:hover {
+            background: #593371;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-main span {
+            margin-left: 12px;
+        }
+
+    .btn-outline {
+        border: 1px solid #b9a8c5;
+        color: #493954;
+        background: rgba(255,255,255,.6);
+    }
+
+        .btn-outline:hover {
+            background: white;
+            color: #6f438f;
+        }
+
+    .hero-visual {
+        position: relative;
+        height: 480px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .event-card {
+        position: relative;
+        z-index: 2;
+        width: 330px;
+        min-height: 410px;
+        padding: 30px;
+        border-radius: 28px;
+        background: linear-gradient(145deg, #ffffff, #f5edf9);
+        box-shadow: 0 35px 80px rgba(77,48,92,.18);
+        transform: rotate(3deg);
+    }
+
+    .event-card-top {
+        display: flex;
+        justify-content: space-between;
+        color: #9a7aaa;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 2px;
+    }
+
+    .event-icon {
+        width: 75px;
+        height: 75px;
+        margin: 55px auto 25px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e6d4ef;
+        color: #7c4b98;
+        font-size: 34px;
+    }
+
+    .small-title {
+        text-align: center;
+        color: #9c899f;
+        font-size: 9px;
+        letter-spacing: 2px;
+        font-weight: 700;
+    }
+
+    .event-card h2 {
+        text-align: center;
+        font-size: 32px;
+        line-height: 1.15;
+    }
+
+        .event-card h2 em {
+            color: #8b5aaa;
+            font-family: Georgia, serif;
+            font-weight: 400;
+        }
+
+    .event-details {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        border-top: 1px solid #e1d6e7;
+        margin-top: 30px;
+        padding-top: 20px;
+    }
+
+        .event-details div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .event-details small {
+            color: #9c899f;
+            font-size: 8px;
+            letter-spacing: 1px;
+        }
+
+        .event-details strong {
+            font-size: 12px;
+        }
+
+    .floating-card {
+        position: absolute;
+        z-index: 3;
+        background: white;
+        padding: 13px 18px;
+        border-radius: 50px;
+        box-shadow: 0 15px 35px rgba(60,40,70,.12);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+        .floating-card span {
+            color: #9b63b4;
+            margin-right: 7px;
+        }
+
+    .floating-one {
+        top: 55px;
+        left: 10px;
+    }
+
+    .floating-two {
+        bottom: 45px;
+        right: 0;
+    }
+
+    .glow {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(2px);
+    }
+
+    .glow-one {
+        width: 180px;
+        height: 180px;
+        background: #e4c7ef;
+        top: 20px;
+        right: 10px;
+        opacity: .6;
+    }
+
+    .glow-two {
+        width: 120px;
+        height: 120px;
+        background: #f4cadf;
+        bottom: 20px;
+        left: 30px;
+        opacity: .6;
+    }
+
+    .intro {
+        max-width: 1100px;
+        margin: 100px auto 50px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: end;
+    }
+
+    .section-label {
+        color: #8b5aaa;
+        font-size: 11px;
+        letter-spacing: 2px;
+        font-weight: 800;
+    }
+
+    .intro h2,
+    .final-cta h2 {
+        font-size: 48px;
+        line-height: 1.1;
+        margin: 10px 0;
+        font-weight: 800;
+    }
+
+        .intro h2 span,
+        .final-cta h2 span {
+            color: #8b5aaa;
+            font-family: Georgia, serif;
+            font-style: italic;
+            font-weight: 400;
+        }
+
+    .intro-text {
+        color: #756c7b;
+        line-height: 1.8;
+    }
+
+    .steps {
+        max-width: 1100px;
+        margin: auto;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .step-card {
+        padding: 32px;
+        border-radius: 25px;
+        border: 1px solid #eee7f1;
+        background: white;
+        transition: .25s;
+    }
+
+        .step-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 45px rgba(75,45,90,.1);
+        }
+
+        .step-card.featured {
+            background: #6f438f;
+            color: white;
+            border-color: #6f438f;
+            transform: translateY(-15px);
+        }
+
+            .step-card.featured:hover {
+                transform: translateY(-21px);
+            }
+
+    .step-top {
+        display: flex;
+        justify-content: space-between;
+        color: #a68bb5;
+        font-weight: 800;
+    }
+
+    .featured .step-top {
+        color: #d9c4e3;
+    }
+
+    .step-icon {
+        font-size: 22px;
+    }
+
+    .step-card h3 {
+        margin-top: 60px;
+        font-size: 25px;
+    }
+
+    .step-card p {
+        color: #766d7d;
+        line-height: 1.7;
+        min-height: 80px;
+    }
+
+    .featured p {
+        color: #e1d7e7;
+    }
+
+    .step-card a {
+        color: #79509a;
+        font-weight: 700;
+        text-decoration: none;
+    }
+
+    .featured a {
+        color: white;
+    }
+
+    .stats {
+        max-width: 1100px;
+        margin: 90px auto;
+        padding: 35px 0;
+        border-top: 1px solid #e8e1eb;
+        border-bottom: 1px solid #e8e1eb;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        text-align: center;
+    }
+
+        .stats div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .stats strong {
+            color: #8b5aaa;
+            font-size: 28px;
+        }
+
+        .stats span {
+            color: #777080;
+            font-size: 13px;
+        }
+
+    .final-cta {
+        max-width: 1100px;
+        margin: 0 auto 70px;
+        padding: 60px;
+        border-radius: 35px;
+        background: radial-gradient(circle at 90% 20%, #b783ca, transparent 30%), #392746;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 30px;
+    }
+
+        .final-cta .section-label {
+            color: #d7bce2;
+        }
+
+        .final-cta p {
+            color: #d8cbdc;
+        }
+
+    .cta-button {
+        flex-shrink: 0;
+        background: white;
+        color: #513660;
+        padding: 16px 25px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-weight: 700;
+    }
+
+        .cta-button span {
+            margin-left: 12px;
+        }
+
+    @media (max-width: 900px) {
+
+        .hero-content,
+        .intro {
+            grid-template-columns: 1fr;
+        }
+
+        .hero {
+            padding: 70px 5%;
+        }
+
+        .hero-visual {
+            margin-top: 20px;
+        }
+
+        .steps {
+            grid-template-columns: 1fr;
+            margin: 0 20px;
+        }
+
+        .step-card.featured {
+            transform: none;
+        }
+
+        .stats {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin: 70px 20px;
+        }
+
+        .final-cta {
+            margin: 0 20px 50px;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 40px;
+        }
+    }
+
+</style>
+@functions {
+    private object media;
+}

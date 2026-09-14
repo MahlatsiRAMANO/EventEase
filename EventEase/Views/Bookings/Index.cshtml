@@ -1,0 +1,192 @@
+﻿
+@model List<EventEase.Models.Booking>
+
+@{
+    ViewData["Title"] = "Current Events";
+}
+
+<div class="text-center mb-5">
+
+    <h1>Current Events</h1>
+
+    @if (ViewBag.VenueId != null)
+    {
+        <p class="text-muted">
+            Current events for the selected venue.
+        </p>
+    }
+    else
+    {
+        <p class="text-muted">
+            View all upcoming venue bookings.
+        </p>
+    }
+
+</div>
+
+
+<div class="mb-4">
+
+    <a asp-controller="Venues"
+       asp-action="Index"
+       class="btn btn-secondary">
+        ← Back to Venues
+    </a>
+
+</div>
+
+
+<!-- Search Bookings -->
+<div class="card shadow-sm mb-5">
+
+    <div class="card-body">
+
+        <h5 class="card-title mb-3">
+            Search Bookings
+        </h5>
+
+        <form asp-controller="Bookings"
+              asp-action="Index"
+              method="get">
+
+            <div class="row g-2">
+
+                <div class="col-md-9">
+
+                    <input type="text"
+                           name="searchTerm"
+                           value="@ViewBag.SearchTerm"
+                           class="form-control"
+                           placeholder="Search by Booking ID or Event Name" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info text-center">
+
+        <h5>No bookings found.</h5>
+
+        <p class="mb-0">
+            Try searching using a Booking ID or Event Name.
+        </p>
+
+    </div>
+}
+else
+{
+    <div class="row">
+
+        @foreach (var booking in Model)
+        {
+            <div class="col-md-4 mb-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body d-flex flex-column">
+
+                        <!-- Event heading -->
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+
+                            <h4 class="card-title mb-0">
+                                @booking.EventName
+                            </h4>
+
+                            <span class="badge bg-success">
+                                Booked
+                            </span>
+
+                        </div>
+
+                        <hr />
+
+                        <p class="mb-2">
+                            <strong>Booking ID:</strong>
+                            #@booking.Id
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Venue:</strong>
+                            @booking.Venue?.Name
+                        </p>
+
+                        <p class="mb-2 text-muted">
+                            📍 @booking.Venue?.Location
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Customer:</strong>
+                            @booking.CustomerName
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Date:</strong>
+                            @booking.EventDate.ToString("dd MMMM yyyy")
+                        </p>
+
+                        <p class="mb-2">
+                            <strong>Time:</strong>
+                            @booking.StartTime.ToString(@"hh\:mm")
+                            -
+                            @booking.EndTime.ToString(@"hh\:mm")
+                        </p>
+
+                        <p class="mb-3">
+                            <strong>Guests:</strong>
+                            @booking.NumberOfGuests
+                        </p>
+
+
+                        <!-- Buttons -->
+                        <div class="mt-auto pt-2">
+
+                            <a asp-controller="Bookings"
+                               asp-action="Confirmation"
+                               asp-route-id="@booking.Id"
+                               class="btn btn-primary btn-sm">
+                                View Booking
+                            </a>
+
+                            <a asp-controller="Events"
+                               asp-action="Edit"
+                               asp-route-id="@booking.Id"
+                               class="btn btn-warning btn-sm">
+                                Edit
+                            </a>
+
+                            <a asp-controller="Bookings"
+                               asp-action="Delete"
+                               asp-route-id="@booking.Id"
+                               class="btn btn-danger btn-sm">
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

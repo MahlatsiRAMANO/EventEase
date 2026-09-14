@@ -1,0 +1,131 @@
+﻿```cshtml
+@model EventEase.Models.Booking
+
+@{
+    ViewData["Title"] = "Booking Confirmed";
+}
+
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+
+        <h1 class="text-success">
+            Booking Confirmed! 🎉
+        </h1>
+
+        <p class="lead">
+            Your venue booking has been successfully submitted.
+        </p>
+
+    </div>
+
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            <div class="alert alert-success text-center">
+
+                <strong>Booking Reference:</strong>
+                #@Model.Id
+
+            </div>
+
+            <h3 class="mb-3">
+                Event Information
+            </h3>
+
+            <hr />
+
+            <p>
+                <strong>Event Name:</strong>
+                @Model.EventName
+            </p>
+
+            <p>
+                <strong>Event Date:</strong>
+                @Model.EventDate.ToString("dd MMMM yyyy")
+            </p>
+
+            <p>
+                <strong>Start Time:</strong>
+                @Model.StartTime.ToString(@"hh\:mm")
+            </p>
+
+            <p>
+                <strong>End Time:</strong>
+                @Model.EndTime.ToString(@"hh\:mm")
+            </p>
+
+            <p>
+                <strong>Number of Guests:</strong>
+                @Model.NumberOfGuests
+            </p>
+
+            <h3 class="mt-4 mb-3">
+                Venue Information
+            </h3>
+
+            <hr />
+
+            <p>
+                <strong>Venue:</strong>
+                @Model.Venue?.Name
+            </p>
+
+            <p>
+                <strong>Location:</strong>
+                @Model.Venue?.Location
+            </p>
+
+            <p>
+                <strong>Venue Capacity:</strong>
+                @Model.Venue?.Capacity guests
+            </p>
+
+            <h3 class="mt-4 mb-3">
+                Customer Information
+            </h3>
+
+            <hr />
+
+            <p>
+                <strong>Customer Name:</strong>
+                @Model.CustomerName
+            </p>
+
+            <p>
+                <strong>Email Address:</strong>
+                @Model.CustomerEmail
+            </p>
+
+            <p>
+                <strong>Booking Status:</strong>
+
+                <span class="badge bg-success">
+                    Confirmed
+                </span>
+
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="text-center mt-4">
+
+        <a asp-controller="Bookings"
+           asp-action="Index"
+           class="btn btn-primary">
+            View All Bookings
+        </a>
+
+        <a asp-controller="Venues"
+           asp-action="Index"
+           class="btn btn-secondary">
+            Back to Venues
+        </a>
+
+    </div>
+
+</div>
+```
