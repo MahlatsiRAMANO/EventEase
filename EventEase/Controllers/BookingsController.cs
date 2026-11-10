@@ -1,5 +1,6 @@
-﻿using EventEase.Events;
+using EventEase.Events;
 using EventEase.Models;
+using EventEase.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,45 +16,18 @@ namespace EventEase.Controllers
         }
 
         // GET: Bookings
-        public async Task<IActionResult> Index(
-            int? venueId,
-            string? searchTerm)
+        public async Task<IActionResult> Index(BookingFilter filter)
         {
-            var query = _context.Bookings
+            var bookings = await _context.Bookings
                 .Include(b => b.Venue)
-                .AsQueryable();
-
-            // Filter by venue if a venue was selected
-            if (venueId.HasValue)
-            {
-                query = query.Where(b => b.VenueId == venueId.Value);
-            }
-
-            // Search by Booking ID or Event Name
-            if (!string.IsNullOrWhiteSpace(searchTerm))
-            {
-                searchTerm = searchTerm.Trim();
-
-                if (int.TryParse(searchTerm, out int bookingId))
-                {
-                    query = query.Where(b =>
-                        b.Id == bookingId ||
-                        b.EventName.Contains(searchTerm));
-                }
-                else
-                {
-                    query = query.Where(b =>
-                        b.EventName.Contains(searchTerm));
-                }
-            }
-
-            var bookings = await query
+                .Include(b => b.EventType)
+                .ApplyFilters(filter)
                 .OrderBy(b => b.EventDate)
                 .ThenBy(b => b.StartTime)
                 .ToListAsync();
 
-            ViewBag.VenueId = venueId;
-            ViewBag.SearchTerm = searchTerm;
+            ViewBag.Filter = filter;
+            await LoadEventTypes();
 
             return View(bookings);
         }
@@ -74,7 +48,16 @@ namespace EventEase.Controllers
                 return NotFound();
             }
 
+            if (!venue.IsAvailable)
+            {
+                TempData["ErrorMessage"] =
+                    $"{venue.Name} is currently unavailable for bookings.";
+
+                return RedirectToAction("Index", "Venues");
+            }
+
             ViewBag.Venue = venue;
+            await LoadEventTypes();
 
             var booking = new Booking
             {
@@ -98,6 +81,26 @@ namespace EventEase.Controllers
             if (venue == null)
             {
                 return NotFound();
+            }
+
+            if (!venue.IsAvailable)
+            {
+                ModelState.AddModelError(
+                    "",
+                    "This venue is currently unavailable for bookings.");
+            }
+
+            if (booking.EventTypeId == null)
+            {
+                ModelState.AddModelError(
+                    "EventTypeId",
+                    "Please select an event type.");
+            }
+            else if (!await _context.EventTypes.AnyAsync(et => et.Id == booking.EventTypeId))
+            {
+                ModelState.AddModelError(
+                    "EventTypeId",
+                    "Please select a valid event type.");
             }
 
             if (booking.NumberOfGuests > venue.Capacity)
@@ -138,6 +141,7 @@ namespace EventEase.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.Venue = venue;
+                await LoadEventTypes();
                 return View(booking);
             }
 
@@ -155,6 +159,7 @@ namespace EventEase.Controllers
         {
             var booking = await _context.Bookings
                 .Include(b => b.Venue)
+                .Include(b => b.EventType)
                 .FirstOrDefaultAsync(b => b.Id == id);
 
             if (booking == null)
@@ -307,6 +312,13 @@ namespace EventEase.Controllers
         private bool BookingExists(int id)
         {
             return _context.Bookings.Any(b => b.Id == id);
+        }
+
+        private async Task LoadEventTypes()
+        {
+            ViewBag.EventTypes = await _context.EventTypes
+                .OrderBy(et => et.Name)
+                .ToListAsync();
         }
     }
 }

@@ -21,5 +21,7 @@ namespace EventEase.Models
         [MaxLength(100)]
         public string ImageFileName { get; set; } = "";
 
+        public bool IsAvailable { get; set; } = true;
+
     }
 }

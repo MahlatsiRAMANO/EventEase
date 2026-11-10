@@ -1,4 +1,4 @@
-﻿
+
 @model List<EventEase.Models.Booking>
 
 @{
@@ -24,7 +24,7 @@
 
     <h1>Current Events</h1>
 
-    @if (ViewBag.VenueId != null)
+    @if (((EventEase.Models.BookingFilter)ViewBag.Filter).VenueId != null)
     {
         <p class="text-muted">
             Current events for the selected venue.
@@ -52,62 +52,12 @@
 </div>
 
 
-<!-- Search -->
-<div class="card shadow-sm mb-5">
+<!-- Search and filters -->
+<partial name="_BookingFilters" model="(EventEase.Models.BookingFilter)ViewBag.Filter" />
 
-    <div class="card-body">
-
-        <div class="row align-items-center">
-
-            <div class="col-md-4 mb-3 mb-md-0">
-
-                <h5 class="mb-1">
-                    Search Bookings
-                </h5>
-
-                <small class="text-muted">
-                    Find a booking by ID or event name.
-                </small>
-
-            </div>
-
-            <div class="col-md-8">
-
-                <form asp-controller="Bookings"
-                      asp-action="Index"
-                      method="get">
-
-                    @if (ViewBag.VenueId != null)
-                    {
-                        <input type="hidden"
-                               name="venueId"
-                               value="@ViewBag.VenueId" />
-                    }
-
-                    <div class="input-group">
-
-                        <input type="text"
-                               name="searchTerm"
-                               value="@ViewBag.SearchTerm"
-                               class="form-control"
-                               placeholder="Booking ID or Event Name" />
-
-                        <button type="submit"
-                                class="btn btn-primary">
-                            Search
-                        </button>
-
-                    </div>
-
-                </form>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
+<p class="text-muted">
+    @Model.Count booking(s) found
+</p>
 
 
 @if (!Model.Any())
@@ -116,16 +66,16 @@
 
         <h5>No bookings found.</h5>
 
-        @if (!string.IsNullOrWhiteSpace(ViewBag.SearchTerm))
+        @if (((EventEase.Models.BookingFilter)ViewBag.Filter).HasActiveFilters)
         {
             <p>
-                No bookings matched your search.
+                No bookings matched your search or filters.
             </p>
 
-            <a asp-controller="Bookings"
+            <a asp-controller="Events"
                asp-action="Index"
                class="btn btn-outline-primary btn-sm">
-                Clear Search
+                Clear All
             </a>
         }
         else
@@ -184,7 +134,14 @@ else
 
                         </div>
 
-                        <small class="text-muted">
+                        @if (booking.EventType != null)
+                        {
+                            <span class="badge bg-secondary mb-2">
+                                @booking.EventType.Name
+                            </span>
+                        }
+
+                        <small class="text-muted d-block">
                             Booking #@booking.Id
                         </small>
 
@@ -195,6 +152,18 @@ else
                         <p class="mb-2">
                             <strong>Venue:</strong>
                             @booking.Venue?.Name
+
+                            @if (booking.Venue != null)
+                            {
+                                if (booking.Venue.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Unavailable</span>
+                                }
+                            }
                         </p>
 
                         <p class="text-muted mb-3">

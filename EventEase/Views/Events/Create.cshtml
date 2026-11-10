@@ -1,4 +1,4 @@
-﻿@model EventEase.Models.Booking
+@model EventEase.Models.Booking
 
 @{
     ViewData["Title"] = "Create Event";
@@ -73,6 +73,34 @@
                     </div>
 
                     <div class="mb-3">
+                        <label asp-for="EventTypeId" class="form-label">
+                            Event Type
+                        </label>
+
+                        <select asp-for="EventTypeId" class="form-select">
+
+                            <option value="">-- Select an Event Type --</option>
+
+                            @{
+                                var eventTypes = ViewBag.EventTypes as List<EventEase.Models.EventType>;
+                            }
+
+                            @if (eventTypes != null)
+                            {
+                                foreach (var eventType in eventTypes)
+                                {
+                                    <option value="@eventType.Id">@eventType.Name</option>
+                                }
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="EventTypeId"
+                              class="text-danger">
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
                         <label asp-for="VenueId" class="form-label">
                             Venue
                         </label>
@@ -89,7 +117,7 @@
                                 foreach (var venue in venues)
                                 {
                                     <option value="@venue.Id">
-                                        @venue.Name - @venue.Location
+                                        @venue.Name - @venue.Location@(venue.IsAvailable ? "" : " (Unavailable)")
                                     </option>
                                 }
                             }

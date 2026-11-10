@@ -1,4 +1,3 @@
-﻿```cshtml
 @model EventEase.Models.Booking
 
 @{
@@ -40,6 +39,14 @@
                 <strong>Event Name:</strong>
                 @Model.EventName
             </p>
+
+            @if (Model.EventType != null)
+            {
+                <p>
+                    <strong>Event Type:</strong>
+                    @Model.EventType.Name
+                </p>
+            }
 
             <p>
                 <strong>Event Date:</strong>
@@ -128,4 +135,3 @@
     </div>
 
 </div>
-```

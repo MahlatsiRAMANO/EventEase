@@ -1,4 +1,4 @@
-﻿using EventEase.Events;
+using EventEase.Events;
 using EventEase.Models;
 using EventEase.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -21,18 +21,12 @@ namespace EventEase.Controllers
 
 
         // GET: Events
-        public async Task<IActionResult> Index(int? venueId)
+        public async Task<IActionResult> Index(BookingFilter filter)
         {
-            var query = _context.Bookings
+            var bookings = await _context.Bookings
                 .Include(b => b.Venue)
-                .AsQueryable();
-
-            if (venueId.HasValue)
-            {
-                query = query.Where(b => b.VenueId == venueId.Value);
-            }
-
-            var bookings = await query
+                .Include(b => b.EventType)
+                .ApplyFilters(filter)
                 .OrderBy(b => b.EventDate)
                 .ThenBy(b => b.StartTime)
                 .ToListAsync();
@@ -46,7 +40,8 @@ namespace EventEase.Controllers
                 }
             }
 
-            ViewBag.VenueId = venueId;
+            ViewBag.Filter = filter;
+            await LoadEventTypes();
 
             return View(bookings);
         }
@@ -56,6 +51,7 @@ namespace EventEase.Controllers
         public async Task<IActionResult> Create()
         {
             await LoadVenues();
+            await LoadEventTypes();
 
             return View();
         }
@@ -78,6 +74,13 @@ namespace EventEase.Controllers
             }
             else
             {
+                if (!venue.IsAvailable)
+                {
+                    ModelState.AddModelError(
+                        "VenueId",
+                        "This venue is currently unavailable for bookings.");
+                }
+
                 if (booking.NumberOfGuests > venue.Capacity)
                 {
                     ModelState.AddModelError(
@@ -114,9 +117,12 @@ namespace EventEase.Controllers
                 }
             }
 
+            await ValidateEventTypeAsync(booking);
+
             if (!ModelState.IsValid)
             {
                 await LoadVenues();
+                await LoadEventTypes();
                 return View(booking);
             }
 
@@ -161,6 +167,8 @@ namespace EventEase.Controllers
                 .OrderBy(v => v.Name)
                 .ToListAsync();
 
+            await LoadEventTypes();
+
             return View(booking);
         }
 
@@ -196,6 +204,15 @@ namespace EventEase.Controllers
             }
             else
             {
+                // An existing booking can stay where it is, but it cannot be
+                // moved to a venue that is currently unavailable
+                if (!venue.IsAvailable && existingBooking.VenueId != booking.VenueId)
+                {
+                    ModelState.AddModelError(
+                        "VenueId",
+                        "This venue is currently unavailable for bookings.");
+                }
+
                 if (booking.NumberOfGuests > venue.Capacity)
                 {
                     ModelState.AddModelError(
@@ -233,11 +250,15 @@ namespace EventEase.Controllers
                 }
             }
 
+            await ValidateEventTypeAsync(booking);
+
             if (!ModelState.IsValid)
             {
                 ViewBag.Venues = await _context.Venues
                     .OrderBy(v => v.Name)
                     .ToListAsync();
+
+                await LoadEventTypes();
 
                 return View(booking);
             }
@@ -250,6 +271,7 @@ namespace EventEase.Controllers
             existingBooking.StartTime = booking.StartTime;
             existingBooking.EndTime = booking.EndTime;
             existingBooking.NumberOfGuests = booking.NumberOfGuests;
+            existingBooking.EventTypeId = booking.EventTypeId;
 
             // Upload a new image if one was selected
             if (imageFile != null && imageFile.Length > 0)
@@ -313,6 +335,29 @@ namespace EventEase.Controllers
         {
             ViewBag.Venues = await _context.Venues
                 .OrderBy(v => v.Name)
+                .ToListAsync();
+        }
+
+        private async Task ValidateEventTypeAsync(Booking booking)
+        {
+            if (booking.EventTypeId == null)
+            {
+                ModelState.AddModelError(
+                    "EventTypeId",
+                    "Please select an event type.");
+            }
+            else if (!await _context.EventTypes.AnyAsync(et => et.Id == booking.EventTypeId))
+            {
+                ModelState.AddModelError(
+                    "EventTypeId",
+                    "Please select a valid event type.");
+            }
+        }
+
+        private async Task LoadEventTypes()
+        {
+            ViewBag.EventTypes = await _context.EventTypes
+                .OrderBy(et => et.Name)
                 .ToListAsync();
         }
     }

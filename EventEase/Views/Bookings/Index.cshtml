@@ -1,4 +1,4 @@
-﻿
+
 @model List<EventEase.Models.Booking>
 
 @{
@@ -9,7 +9,7 @@
 
     <h1>Current Events</h1>
 
-    @if (ViewBag.VenueId != null)
+    @if (((EventEase.Models.BookingFilter)ViewBag.Filter).VenueId != null)
     {
         <p class="text-muted">
             Current events for the selected venue.
@@ -36,47 +36,12 @@
 </div>
 
 
-<!-- Search Bookings -->
-<div class="card shadow-sm mb-5">
+<!-- Search and filters -->
+<partial name="_BookingFilters" model="(EventEase.Models.BookingFilter)ViewBag.Filter" />
 
-    <div class="card-body">
-
-        <h5 class="card-title mb-3">
-            Search Bookings
-        </h5>
-
-        <form asp-controller="Bookings"
-              asp-action="Index"
-              method="get">
-
-            <div class="row g-2">
-
-                <div class="col-md-9">
-
-                    <input type="text"
-                           name="searchTerm"
-                           value="@ViewBag.SearchTerm"
-                           class="form-control"
-                           placeholder="Search by Booking ID or Event Name" />
-
-                </div>
-
-                <div class="col-md-3">
-
-                    <button type="submit"
-                            class="btn btn-primary w-100">
-                        Search
-                    </button>
-
-                </div>
-
-            </div>
-
-        </form>
-
-    </div>
-
-</div>
+<p class="text-muted">
+    @Model.Count booking(s) found
+</p>
 
 
 @if (!Model.Any())
@@ -86,7 +51,7 @@
         <h5>No bookings found.</h5>
 
         <p class="mb-0">
-            Try searching using a Booking ID or Event Name.
+            Try a different search or clear the filters.
         </p>
 
     </div>
@@ -116,6 +81,13 @@ else
 
                         </div>
 
+                        @if (booking.EventType != null)
+                        {
+                            <span class="badge bg-secondary mb-2">
+                                @booking.EventType.Name
+                            </span>
+                        }
+
                         <hr />
 
                         <p class="mb-2">
@@ -126,6 +98,18 @@ else
                         <p class="mb-2">
                             <strong>Venue:</strong>
                             @booking.Venue?.Name
+
+                            @if (booking.Venue != null)
+                            {
+                                if (booking.Venue.IsAvailable)
+                                {
+                                    <span class="badge bg-success">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Unavailable</span>
+                                }
+                            }
                         </p>
 
                         <p class="mb-2 text-muted">

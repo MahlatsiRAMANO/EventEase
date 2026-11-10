@@ -1,0 +1,147 @@
+@model EventEase.Models.BookingFilter
+
+@{
+    // Submit to whichever controller is showing this page
+    var controllerName = ViewContext.RouteData.Values["controller"]?.ToString();
+    var eventTypes = ViewBag.EventTypes as List<EventEase.Models.EventType>
+                     ?? new List<EventEase.Models.EventType>();
+}
+
+<div class="card shadow-sm mb-5">
+
+    <div class="card-body">
+
+        <h5 class="card-title mb-1">
+            Search and Filter Bookings
+        </h5>
+
+        <p class="text-muted small mb-3">
+            Search by booking ID or event name, then narrow the results
+            by event type, date range or venue availability.
+        </p>
+
+        <form asp-controller="@controllerName"
+              asp-action="Index"
+              method="get">
+
+            @if (Model.VenueId.HasValue)
+            {
+                <input type="hidden" name="venueId" value="@Model.VenueId" />
+            }
+
+            <div class="row g-2 mb-3">
+
+                <div class="col-md-9">
+
+                    <input type="text"
+                           name="searchTerm"
+                           value="@Model.SearchTerm"
+                           class="form-control"
+                           placeholder="Search by Booking ID or Event Name" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <button type="submit"
+                            class="btn btn-primary w-100">
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="row g-2 align-items-end">
+
+                <div class="col-md-3">
+
+                    <label for="eventTypeId" class="form-label small text-muted mb-1">
+                        Event Type
+                    </label>
+
+                    <select id="eventTypeId" name="eventTypeId" class="form-select">
+
+                        <option value="">All event types</option>
+
+                        @foreach (var eventType in eventTypes)
+                        {
+                            <option value="@eventType.Id"
+                                    selected="@(Model.EventTypeId == eventType.Id)">
+                                @eventType.Name
+                            </option>
+                        }
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label for="startDate" class="form-label small text-muted mb-1">
+                        From date
+                    </label>
+
+                    <input type="date"
+                           id="startDate"
+                           name="startDate"
+                           value="@(Model.StartDate?.ToString("yyyy-MM-dd"))"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <label for="endDate" class="form-label small text-muted mb-1">
+                        To date
+                    </label>
+
+                    <input type="date"
+                           id="endDate"
+                           name="endDate"
+                           value="@(Model.EndDate?.ToString("yyyy-MM-dd"))"
+                           class="form-control" />
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <div class="form-check mb-2">
+
+                        <input type="checkbox"
+                               id="availableOnly"
+                               name="availableOnly"
+                               value="true"
+                               class="form-check-input"
+                               checked="@Model.AvailableOnly" />
+
+                        <label class="form-check-label" for="availableOnly">
+                            Available venues only
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+
+                <button type="submit" class="btn btn-outline-primary">
+                    Apply Filters
+                </button>
+
+                <a asp-controller="@controllerName"
+                   asp-action="Index"
+                   asp-route-venueId="@Model.VenueId"
+                   class="btn btn-outline-secondary">
+                    Clear All
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

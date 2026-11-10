@@ -71,6 +71,26 @@
                 </div>
 
                 <div class="mb-3">
+                    <label asp-for="EventTypeId" class="form-label">
+                        Event Type
+                    </label>
+
+                    <select asp-for="EventTypeId" class="form-select">
+
+                        <option value="">-- Select an Event Type --</option>
+
+                        @foreach (var eventType in (List<EventEase.Models.EventType>)ViewBag.EventTypes)
+                        {
+                            <option value="@eventType.Id">@eventType.Name</option>
+                        }
+
+                    </select>
+
+                    <span asp-validation-for="EventTypeId"
+                          class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
                     <label asp-for="EventDate" class="form-label">
                         Event Date
                     </label>
